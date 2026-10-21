@@ -24,7 +24,17 @@ final class FakeWooStore
     /** @var list<string> */
     public array $requested = [];
 
+    /** Modern stores answer ?type=variation&parent=… in bulk; set false to simulate a store that ignores the filter. */
+    public bool $bulkVariations = true;
+
     public function __construct(private string $robots = "User-agent: *\nAllow: /\nSitemap: https://shop.acme-store.com/wp-sitemap.xml\n") {}
+
+    public function withoutBulkVariations(): self
+    {
+        $this->bulkVariations = false;
+
+        return $this;
+    }
 
     public static function fixture(string $name): string
     {
@@ -94,6 +104,7 @@ final class FakeWooStore
         return match (true) {
             $path === '/robots.txt' => Http::response($this->robots, 200, ['Content-Type' => 'text/plain']),
             $path === '/' => Http::response(self::fixture('home.html'), 200, ['Content-Type' => 'text/html; charset=UTF-8']),
+            $path === '/wp-json/wc/store/v1/products' && ($query['type'] ?? null) === 'variation' && $this->bulkVariations => $this->variationsOf(array_map('intval', explode(',', (string) ($query['parent'] ?? '')))),
             $path === '/wp-json/wc/store/v1/products' => $this->productsPage((int) ($query['page'] ?? 1), (int) ($query['per_page'] ?? 100)),
             (bool) preg_match('#^/wp-json/wc/store/v1/products/(\d+)$#', $path, $m) => $this->json('store-api-variation-'.$m[1].'.json'),
             $path === '/wp-sitemap.xml' => Http::response(self::fixture('wp-sitemap.xml'), 200, ['Content-Type' => 'application/xml']),
@@ -116,6 +127,20 @@ final class FakeWooStore
         }
 
         return Http::response(json_decode(self::fixture($file), true), 200, ['X-WP-Total' => '4', 'X-WP-TotalPages' => '2']);
+    }
+
+    /** @param list<int> $parents */
+    private function variationsOf(array $parents): PromiseInterface
+    {
+        $rows = [];
+        foreach (glob(base_path('tests/Fixtures/woo/store-api-variation-*.json')) as $file) {
+            $row = json_decode(file_get_contents($file), true);
+            if (in_array((int) $row['parent'], $parents, true)) {
+                $rows[] = $row;
+            }
+        }
+
+        return Http::response($rows, 200, ['X-WP-Total' => (string) count($rows), 'X-WP-TotalPages' => '1']);
     }
 
     private function json(string $file): PromiseInterface

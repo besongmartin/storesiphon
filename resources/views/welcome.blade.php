@@ -20,7 +20,7 @@
             <p class="mt-6 max-w-2xl text-lg leading-[var(--leading-normal)] text-secondary">StoreSiphon reads the public catalogue of a WooCommerce shop and hands it back as clean, consistent data: prices, stock, variations and images included.</p>
             <div class="mt-8 flex flex-wrap gap-3">
                 <x-button :href="route('register')" size="lg">Start free</x-button>
-                <x-button href="#how-it-works" variant="secondary" size="lg">How it works</x-button>
+                <x-button :href="route('try')" variant="secondary" size="lg">Try it without an account</x-button>
             </div>
             <p class="mt-4 text-sm text-muted">No card needed. Paid plans are prepaid in Bitcoin.</p>
         </div>

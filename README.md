@@ -35,7 +35,13 @@ Requirements: PHP 8.2+ (`pdo_mysql`, `intl`, `sodium`), Composer 2, Node 22+, XA
 
 4. Run the app: `npm run dev` (Vite; it syncs `brand/` assets into `public/brand` first) and `php artisan serve`, then open http://127.0.0.1:8000.
    - Emails (verification, password reset) go to `storage/logs/laravel.log` (`MAIL_MAILER=log`).
-   - Background jobs, when added, run with `php artisan queue:work` (database driver locally).
+   - Extractions and exports run in the background. Keep a worker running:
+
+     ```bash
+     php artisan queue:work --queue=extractions,default --tries=1 --timeout=3600
+     ```
+
+   - Diagnostics (no data saved): `php artisan fetch:probe <url>` and `php artisan extract:run <store> --max=5`. Use them only on stores you are allowed to scrape.
 
 ## Tests
 

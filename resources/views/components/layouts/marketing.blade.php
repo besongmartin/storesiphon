@@ -21,6 +21,7 @@
                 <a href="{{ route('home') }}#how-it-works" class="hover:text-ink">How it works</a>
                 <a href="{{ route('home') }}#formats" class="hover:text-ink">Formats</a>
                 <a href="{{ route('home') }}#pricing" class="hover:text-ink">Pricing</a>
+                <a href="{{ route('try') }}" class="hover:text-ink">Try it</a>
             </nav>
             <div class="flex items-center gap-2">
                 @auth

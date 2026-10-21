@@ -123,6 +123,7 @@ final class SitemapSource implements ProductSource
             if (isset($this->skipPaths[Extractor::pathKey($url) ?? ''])) {
                 continue;
             }
+            $options->checkpoint();
             $product = $this->product($url);
             if ($product === null) {
                 continue;

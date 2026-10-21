@@ -2,9 +2,8 @@
 @php
     $nav = [
         ['label' => 'Dashboard', 'route' => 'dashboard', 'ready' => true],
-        ['label' => 'New extraction', 'route' => null, 'ready' => false],
-        ['label' => 'Jobs', 'route' => null, 'ready' => false],
-        ['label' => 'Exports', 'route' => null, 'ready' => false],
+        ['label' => 'New extraction', 'route' => 'extractions.create', 'ready' => true],
+        ['label' => 'Extractions', 'route' => 'extractions.index', 'ready' => true, 'match' => ['extractions.index', 'extractions.show']],
         ['label' => 'Billing', 'route' => null, 'ready' => false],
         ['label' => 'Settings', 'route' => 'settings.profile', 'ready' => true, 'match' => 'settings.*'],
     ];
@@ -26,7 +25,7 @@
         </div>
         <nav class="space-y-0.5 px-3 py-4">
             @foreach ($nav as $item)
-                @php $active = $item['route'] && request()->routeIs($item['match'] ?? $item['route']); @endphp
+                @php $active = $item['route'] && request()->routeIs(...(array) ($item['match'] ?? $item['route'])); @endphp
                 @if ($item['ready'])
                     <a href="{{ route($item['route']) }}" @if ($active) aria-current="page" @endif
                         class="relative flex h-9 items-center gap-3 rounded-md px-3 text-sm font-medium {{ $active ? 'bg-primary-subtle text-primary' : 'text-secondary hover:bg-sunken hover:text-ink' }}">

@@ -25,6 +25,8 @@ final class StoreApiSource implements ProductSource
 
     public const QUERY = 'rest_route';
 
+    private const BATCH_SIZE = 10;
+
     public function __construct(
         private readonly SafeHttpClient $client,
         private readonly string $origin,
@@ -76,6 +78,7 @@ final class StoreApiSource implements ProductSource
         $emitted = 0;
 
         while ($totalPages === null || $page <= $totalPages) {
+            $options->checkpoint();
             $response = $this->client->get($this->url('products', $query + ['page' => $page]), ['Accept' => 'application/json']);
             if (! $response->successful()) {
                 // WordPress answers 400 rest_post_invalid_page_number past the last page.
@@ -93,20 +96,16 @@ final class StoreApiSource implements ProductSource
             }
             $totalPages ??= $response->header('x-wp-totalpages') !== null ? max(1, (int) $response->header('x-wp-totalpages')) : PHP_INT_MAX;
 
-            $batch = [];
-            foreach ($items as $item) {
-                if ($emitted >= $options->maxProducts) {
-                    break;
+            // Hand over small groups so progress (and saved results) advance while variations load.
+            $remaining = array_slice($items, 0, max(0, $options->maxProducts - $emitted));
+            foreach (array_chunk($remaining, self::BATCH_SIZE) as $group) {
+                $batch = array_map(fn (array $item) => $this->map($item), $group);
+                if ($options->includeVariations) {
+                    $this->attachVariations($group, $batch, $options);
                 }
-                $product = $this->map($item);
-                if ($options->includeVariations && $product->type === ProductData::TYPE_VARIABLE) {
-                    $product->variations = $this->variations($item, $product);
-                }
-                $batch[] = $product;
-                $emitted++;
+                $emitted += count($batch);
+                yield $batch;
             }
-
-            yield $batch;
 
             if ($emitted >= $options->maxProducts) {
                 return;
@@ -115,8 +114,83 @@ final class StoreApiSource implements ProductSource
         }
     }
 
-    /** @return list<ProductData> */
-    private function variations(array $parentItem, ProductData $parent): array
+    /**
+     * Resolve variations for a group of products: one bulk request (?type=variation&parent=…) for the
+     * whole group, then individual requests only for variations the bulk answer did not include
+     * (older stores ignore the filter).
+     *
+     * @param  list<array<string, mixed>>  $items
+     * @param  list<ProductData>  $products
+     */
+    private function attachVariations(array $items, array $products, ExtractionOptions $options): void
+    {
+        $wanted = [];
+        foreach ($items as $i => $item) {
+            if ($products[$i]->type === ProductData::TYPE_VARIABLE) {
+                foreach ($item['variations'] ?? [] as $ref) {
+                    $wanted[(int) $ref['id']] = (int) $item['id'];
+                }
+            }
+        }
+        if (! $wanted) {
+            return;
+        }
+
+        $found = $this->bulkVariations(array_values(array_unique($wanted)), $wanted, $options);
+
+        foreach ($items as $i => $item) {
+            if ($products[$i]->type === ProductData::TYPE_VARIABLE) {
+                $products[$i]->variations = $this->variations($item, $products[$i], $options, $found);
+            }
+        }
+    }
+
+    /**
+     * @param  list<int>  $parentIds
+     * @param  array<int, int>  $wanted  variation id => parent id
+     * @return array<int, array<string, mixed>> variation id => Store API item
+     */
+    private function bulkVariations(array $parentIds, array $wanted, ExtractionOptions $options): array
+    {
+        $found = [];
+        $page = 1;
+        do {
+            $options->checkpoint();
+            try {
+                $response = $this->client->get($this->url('products', [
+                    'type' => 'variation', 'parent' => implode(',', $parentIds), 'per_page' => 100, 'page' => $page,
+                ]), ['Accept' => 'application/json']);
+            } catch (FetchFailedException) {
+                return $found;
+            }
+            $data = $response->successful() ? $this->decode($response) : null;
+            if (! is_array($data) || ! array_is_list($data)) {
+                return $found;
+            }
+            $matched = 0;
+            foreach ($data as $row) {
+                // Only trust rows that really are variations of the products we asked about.
+                $id = (int) ($row['id'] ?? 0);
+                if (($row['type'] ?? null) === 'variation' && isset($wanted[$id]) && (int) ($row['parent'] ?? 0) === $wanted[$id]) {
+                    $found[$id] = $row;
+                    $matched++;
+                }
+            }
+            if ($matched === 0) {
+                return $found; // the store ignores the filter: don't page through its whole catalogue
+            }
+            $pages = (int) ($response->header('x-wp-totalpages') ?? 1);
+            $page++;
+        } while ($page <= min($pages, 20) && count($found) < count($wanted));
+
+        return $found;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $found  variation details already fetched in bulk
+     * @return list<ProductData>
+     */
+    private function variations(array $parentItem, ProductData $parent, ExtractionOptions $options, array $found = []): array
     {
         $out = [];
         foreach ($parentItem['variations'] ?? [] as $ref) {
@@ -124,14 +198,18 @@ final class StoreApiSource implements ProductSource
             foreach ($ref['attributes'] ?? [] as $a) {
                 $attrs[(string) Html::decode($a['name'] ?? '')] = (string) Html::decode((string) ($a['value'] ?? ''));
             }
-            try {
-                $response = $this->client->get($this->url('products/'.(int) $ref['id']), ['Accept' => 'application/json']);
-                $item = $response->successful() ? $this->decode($response) : null;
-            } catch (FetchException $e) {
-                if (! $e instanceof FetchFailedException) {
-                    throw $e;
+            $item = $found[(int) $ref['id']] ?? null;
+            if ($item === null) {
+                $options->checkpoint();
+                try {
+                    $response = $this->client->get($this->url('products/'.(int) $ref['id']), ['Accept' => 'application/json']);
+                    $item = $response->successful() ? $this->decode($response) : null;
+                } catch (FetchException $e) {
+                    if (! $e instanceof FetchFailedException) {
+                        throw $e;
+                    }
+                    $item = null;
                 }
-                $item = null;
             }
             if (! is_array($item)) {
                 $out[] = new ProductData(

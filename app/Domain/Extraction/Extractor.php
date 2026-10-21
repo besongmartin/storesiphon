@@ -45,12 +45,7 @@ final class Extractor
             if ($source instanceof SitemapSource) {
                 $source->skip(array_keys($seen)); // don't re-download pages the API already gave us
             }
-            $remaining = new ExtractionOptions(
-                maxProducts: $options->maxProducts - $summary->products,
-                includeVariations: $options->includeVariations,
-                categoryIds: $options->categoryIds,
-                perPage: $options->perPage,
-            );
+            $remaining = $options->withMaxProducts($options->maxProducts - $summary->products);
 
             try {
                 foreach ($source->pages($remaining) as $batch) {
