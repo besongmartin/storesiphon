@@ -20,6 +20,8 @@ final class RobotsTxt
         public readonly bool $disallowAll = false,
         /** @var list<string> */
         public readonly array $sitemaps = [],
+        /** True when this "disallow all" comes from robots.txt being unreachable, not from the owner's rules. */
+        public readonly bool $unreachable = false,
     ) {}
 
     public static function allowAll(): self
@@ -27,9 +29,9 @@ final class RobotsTxt
         return new self([], null);
     }
 
-    public static function disallowAll(): self
+    public static function disallowAll(bool $unreachable = false): self
     {
-        return new self([], null, true);
+        return new self([], null, true, [], $unreachable);
     }
 
     public static function parse(string $content, string $agent): self

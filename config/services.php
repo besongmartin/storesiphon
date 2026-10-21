@@ -44,4 +44,10 @@ return [
         'confirmations' => (int) env('BTCPAY_CONFIRMATIONS', 1),      // D8: 1 confirmation
         'expiration_minutes' => (int) env('BTCPAY_INVOICE_EXPIRATION', 30),
     ],
+
+    // Cloudflare Turnstile for public forms (disabled while empty).
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
 ];

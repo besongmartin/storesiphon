@@ -35,6 +35,9 @@
     </header>
 
     <main id="main" class="flex-1">
+        @if (session('status'))
+            <div class="mx-auto max-w-[var(--container-max)] px-4 pt-6 sm:px-6"><x-alert tone="success">{{ session('status') }}</x-alert></div>
+        @endif
         {{ $slot }}
     </main>
 
@@ -57,7 +60,7 @@
                     <li><a class="hover:text-ink" href="{{ route('legal', 'terms') }}">Terms of service</a></li>
                     <li><a class="hover:text-ink" href="{{ route('legal', 'privacy') }}">Privacy policy</a></li>
                     <li><a class="hover:text-ink" href="{{ route('legal', 'refunds') }}">Refund policy</a></li>
-                    <li><a class="hover:text-ink" href="{{ route('legal', 'store-owners') }}">For store owners</a></li>
+                    <li><a class="hover:text-ink" href="{{ route('store-owners') }}">For store owners</a></li>
                 </ul>
             </div>
         </div>

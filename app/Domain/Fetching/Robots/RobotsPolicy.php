@@ -38,7 +38,7 @@ final class RobotsPolicy
         $response = $fetch($robotsUrl);
 
         if ($response === null || $response->status >= 500) {
-            $robots = RobotsTxt::disallowAll();
+            $robots = RobotsTxt::disallowAll(unreachable: true);
             $this->cache->put($key, $robots, $this->failureTtlSeconds);
 
             return $robots;

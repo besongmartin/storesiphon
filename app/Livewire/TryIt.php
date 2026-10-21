@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Domain\Extraction\ExtractionService;
+use App\Domain\Security\Turnstile;
 use App\Models\ExtractionJob;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -21,6 +22,8 @@ class TryIt extends Component
 {
     public string $url = '';
 
+    public string $turnstileToken = '';
+
     #[Locked]
     public ?string $jobId = null;
 
@@ -29,9 +32,10 @@ class TryIt extends Component
         $this->jobId = session('guest_job');
     }
 
-    public function start(ExtractionService $service): void
+    public function start(ExtractionService $service, Turnstile $turnstile): void
     {
         $this->validate(['url' => 'required|string|max:2048']);
+        $turnstile->verifyOrFail($this->turnstileToken, request()->ip());
 
         $token = session('guest_token');
         if (! $token) {

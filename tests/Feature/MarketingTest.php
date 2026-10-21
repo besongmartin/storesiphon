@@ -17,7 +17,7 @@ it('plays the logo intro only on the first page of a session', function () {
 
 it('serves the draft legal pages', function (string $document) {
     $this->get("/legal/{$document}")->assertOk()->assertSee('pending legal review');
-})->with(['terms', 'privacy', 'refunds', 'store-owners']);
+})->with(['terms', 'privacy', 'refunds']);
 
 it('returns 404 for unknown legal documents', function () {
     $this->get('/legal/anything-else')->assertNotFound();

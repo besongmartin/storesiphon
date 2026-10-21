@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Domain\Security\Turnstile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +34,8 @@ class CreateNewUser implements CreatesNewUsers
             ],
             'password' => $this->passwordRules(),
         ])->validate();
+
+        app(Turnstile::class)->verifyOrFail($input['cf-turnstile-response'] ?? null, request()->ip(), 'email');
 
         return User::create([
             'name' => $input['name'],

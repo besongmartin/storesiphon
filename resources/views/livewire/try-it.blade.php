@@ -9,6 +9,7 @@
         <form wire:submit="start" class="mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row sm:items-start">
             <div class="flex-1">
                 <x-input name="url" wire:model="url" label="Store address" placeholder="shop.example.com" mono />
+                <div class="mt-3"><x-turnstile wire:model="turnstileToken" /></div>
             </div>
             <x-button type="submit" size="lg" class="sm:mt-6" wire:loading.attr="disabled">Preview store</x-button>
         </form>

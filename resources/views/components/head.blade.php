@@ -10,7 +10,7 @@
 <link rel="manifest" href="/brand/icons/site.webmanifest">
 <meta name="theme-color" content="#0B1F2E">
 {{-- Resolve the theme before first paint (mirrors resources/js/theme.js) --}}
-<script>
+<script nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}">
     (function () {
         var p = 'system';
         try { p = localStorage.getItem('ss-theme') || 'system'; } catch (e) {}

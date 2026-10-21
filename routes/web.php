@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BtcPayWebhook;
+use App\Http\Controllers\DeleteAccount;
 use App\Http\Controllers\DownloadExport;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsureAdmin;
@@ -8,17 +9,19 @@ use App\Livewire\Admin;
 use App\Livewire\Billing;
 use App\Livewire\Dashboard;
 use App\Livewire\Extractions;
+use App\Livewire\StoreOwners;
 use App\Livewire\TryIt;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 Route::get('/try', TryIt::class)->name('try');
+Route::get('/store-owners', StoreOwners::class)->name('store-owners');
 
 // Payment provider notifications (HMAC-verified; CSRF-exempt in bootstrap/app.php).
 Route::post('/webhooks/btcpay', BtcPayWebhook::class)->middleware('throttle:webhooks')->name('webhooks.btcpay');
 
 Route::get('/legal/{document}', fn (string $document) => view('legal.show', ['document' => $document]))
-    ->whereIn('document', ['terms', 'privacy', 'refunds', 'store-owners'])
+    ->whereIn('document', ['terms', 'privacy', 'refunds'])
     ->name('legal');
 
 Route::middleware(['auth', EnsureAccountIsActive::class, 'verified'])->group(function () {
@@ -38,4 +41,5 @@ Route::middleware(['auth', EnsureAccountIsActive::class, 'verified'])->group(fun
 
     Route::view('/settings/profile', 'settings.profile')->name('settings.profile');
     Route::view('/settings/security', 'settings.security')->name('settings.security');
+    Route::delete('/settings/account', DeleteAccount::class)->middleware('throttle:5,1')->name('settings.account.destroy');
 });

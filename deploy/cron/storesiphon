@@ -1,0 +1,4 @@
+# /etc/cron.d/storesiphon — Laravel scheduler (reconcile payments, purge expired data, heartbeats)
+* * * * * storesiphon cd /var/www/storesiphon/current && php artisan schedule:run >> /dev/null 2>&1
+# Nightly database backup (see docs/deployment/production.md)
+30 2 * * * storesiphon /var/www/storesiphon/current/deploy/backup.sh >> /var/www/storesiphon/shared/storage/logs/backup.log 2>&1
