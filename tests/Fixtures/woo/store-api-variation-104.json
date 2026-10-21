@@ -1,0 +1,58 @@
+{
+ "id": 104,
+ "name": "Baseball Cap",
+ "slug": "baseball-cap",
+ "parent": 103,
+ "type": "variation",
+ "variation": "Colour: x",
+ "permalink": "https://shop.acme-store.com/product/baseball-cap/",
+ "sku": "CAP-RED",
+ "short_description": "<p>Short.</p>",
+ "description": "<p>Plain description.</p>",
+ "on_sale": false,
+ "prices": {
+  "price": "1200",
+  "regular_price": "1200",
+  "sale_price": "1200",
+  "price_range": null,
+  "currency_code": "EUR",
+  "currency_symbol": "€",
+  "currency_minor_unit": 2,
+  "currency_decimal_separator": ",",
+  "currency_thousand_separator": ".",
+  "currency_prefix": "",
+  "currency_suffix": " €"
+ },
+ "price_html": "",
+ "average_rating": "4.50",
+ "review_count": 2,
+ "images": [
+  {
+   "id": 1040,
+   "src": "https://shop.acme-store.com/wp-content/uploads/baseball-cap.jpg",
+   "thumbnail": "",
+   "srcset": "",
+   "sizes": "",
+   "name": "baseball-cap",
+   "alt": "Baseball Cap photo"
+  }
+ ],
+ "categories": [],
+ "tags": [],
+ "brands": [],
+ "attributes": [],
+ "variations": [],
+ "grouped_products": [],
+ "has_options": false,
+ "is_purchasable": true,
+ "is_in_stock": true,
+ "is_on_backorder": false,
+ "low_stock_remaining": null,
+ "stock_availability": {
+  "text": "12 in stock",
+  "class": "in-stock"
+ },
+ "sold_individually": false,
+ "add_to_cart": {},
+ "extensions": {}
+}

@@ -1,0 +1,266 @@
+[
+ {
+  "id": 101,
+  "name": "Wool Beanie &#8211; Winter",
+  "slug": "wool-beanie",
+  "parent": 0,
+  "type": "simple",
+  "variation": "",
+  "permalink": "https://shop.acme-store.com/product/wool-beanie/",
+  "sku": "HAT-WOOL",
+  "short_description": "<p>Short.</p>",
+  "description": "<h2>About</h2><p>Warm &amp; soft.</p><script>alert(1)</script><p><a href=\"javascript:evil()\">x</a> <a href=\"https://acme-store.com/care\" onclick=\"evil()\">care</a></p>",
+  "on_sale": true,
+  "prices": {
+   "price": "1999",
+   "regular_price": "2500",
+   "sale_price": "1999",
+   "price_range": null,
+   "currency_code": "EUR",
+   "currency_symbol": "€",
+   "currency_minor_unit": 2,
+   "currency_decimal_separator": ",",
+   "currency_thousand_separator": ".",
+   "currency_prefix": "",
+   "currency_suffix": " €"
+  },
+  "price_html": "",
+  "average_rating": "4.50",
+  "review_count": 2,
+  "images": [
+   {
+    "id": 1010,
+    "src": "https://shop.acme-store.com/wp-content/uploads/wool-beanie.jpg",
+    "thumbnail": "",
+    "srcset": "",
+    "sizes": "",
+    "name": "wool-beanie",
+    "alt": "Wool Beanie &#8211; Winter photo"
+   }
+  ],
+  "categories": [
+   {
+    "id": 11,
+    "name": "Hats",
+    "slug": "hats",
+    "link": "https://shop.acme-store.com/product-category/hats/"
+   }
+  ],
+  "tags": [
+   {
+    "id": 21,
+    "name": "Winter",
+    "slug": "winter",
+    "link": ""
+   }
+  ],
+  "brands": [
+   {
+    "id": 31,
+    "name": "Acme",
+    "slug": "acme",
+    "link": ""
+   }
+  ],
+  "attributes": [],
+  "variations": [],
+  "grouped_products": [],
+  "has_options": false,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": false,
+  "low_stock_remaining": 3,
+  "stock_availability": {
+   "text": "",
+   "class": "in-stock"
+  },
+  "sold_individually": false,
+  "add_to_cart": {},
+  "extensions": {}
+ },
+ {
+  "id": 102,
+  "name": "Straw Hat",
+  "slug": "straw-hat",
+  "parent": 0,
+  "type": "simple",
+  "variation": "",
+  "permalink": "https://shop.acme-store.com/product/straw-hat/",
+  "sku": "HAT-STRAW",
+  "short_description": "<p>Short.</p>",
+  "description": "<p>Plain description.</p>",
+  "on_sale": false,
+  "prices": {
+   "price": "1500",
+   "regular_price": "1500",
+   "sale_price": "1500",
+   "price_range": null,
+   "currency_code": "EUR",
+   "currency_symbol": "€",
+   "currency_minor_unit": 2,
+   "currency_decimal_separator": ",",
+   "currency_thousand_separator": ".",
+   "currency_prefix": "",
+   "currency_suffix": " €"
+  },
+  "price_html": "",
+  "average_rating": "4.50",
+  "review_count": 2,
+  "images": [
+   {
+    "id": 1020,
+    "src": "https://shop.acme-store.com/wp-content/uploads/straw-hat.jpg",
+    "thumbnail": "",
+    "srcset": "",
+    "sizes": "",
+    "name": "straw-hat",
+    "alt": "Straw Hat photo"
+   }
+  ],
+  "categories": [
+   {
+    "id": 11,
+    "name": "Hats",
+    "slug": "hats",
+    "link": "https://shop.acme-store.com/product-category/hats/"
+   }
+  ],
+  "tags": [],
+  "brands": [
+   {
+    "id": 31,
+    "name": "Acme",
+    "slug": "acme",
+    "link": ""
+   }
+  ],
+  "attributes": [],
+  "variations": [],
+  "grouped_products": [],
+  "has_options": false,
+  "is_purchasable": true,
+  "is_in_stock": false,
+  "is_on_backorder": false,
+  "low_stock_remaining": null,
+  "stock_availability": {
+   "text": "Out of stock",
+   "class": "out-of-stock"
+  },
+  "sold_individually": false,
+  "add_to_cart": {},
+  "extensions": {}
+ },
+ {
+  "id": 103,
+  "name": "Baseball Cap",
+  "slug": "baseball-cap",
+  "parent": 0,
+  "type": "variable",
+  "variation": "",
+  "permalink": "https://shop.acme-store.com/product/baseball-cap/",
+  "sku": "CAP-VAR",
+  "short_description": "<p>Short.</p>",
+  "description": "<p>Plain description.</p>",
+  "on_sale": false,
+  "prices": {
+   "price": "1200",
+   "regular_price": "1200",
+   "sale_price": "1200",
+   "price_range": {
+    "min_amount": "1200",
+    "max_amount": "1400"
+   },
+   "currency_code": "EUR",
+   "currency_symbol": "€",
+   "currency_minor_unit": 2,
+   "currency_decimal_separator": ",",
+   "currency_thousand_separator": ".",
+   "currency_prefix": "",
+   "currency_suffix": " €"
+  },
+  "price_html": "",
+  "average_rating": "4.50",
+  "review_count": 2,
+  "images": [
+   {
+    "id": 1030,
+    "src": "https://shop.acme-store.com/wp-content/uploads/baseball-cap.jpg",
+    "thumbnail": "",
+    "srcset": "",
+    "sizes": "",
+    "name": "baseball-cap",
+    "alt": "Baseball Cap photo"
+   }
+  ],
+  "categories": [
+   {
+    "id": 11,
+    "name": "Hats",
+    "slug": "hats",
+    "link": "https://shop.acme-store.com/product-category/hats/"
+   }
+  ],
+  "tags": [],
+  "brands": [
+   {
+    "id": 31,
+    "name": "Acme",
+    "slug": "acme",
+    "link": ""
+   }
+  ],
+  "attributes": [
+   {
+    "id": 0,
+    "name": "Colour",
+    "taxonomy": null,
+    "has_variations": true,
+    "terms": [
+     {
+      "id": 0,
+      "name": "Red",
+      "slug": "red"
+     },
+     {
+      "id": 0,
+      "name": "Blue",
+      "slug": "blue"
+     }
+    ]
+   }
+  ],
+  "variations": [
+   {
+    "id": 104,
+    "attributes": [
+     {
+      "name": "Colour",
+      "value": "Red"
+     }
+    ]
+   },
+   {
+    "id": 105,
+    "attributes": [
+     {
+      "name": "Colour",
+      "value": "Blue"
+     }
+    ]
+   }
+  ],
+  "grouped_products": [],
+  "has_options": true,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": false,
+  "low_stock_remaining": null,
+  "stock_availability": {
+   "text": "",
+   "class": "in-stock"
+  },
+  "sold_individually": false,
+  "add_to_cart": {},
+  "extensions": {}
+ }
+]

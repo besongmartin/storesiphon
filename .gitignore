@@ -28,3 +28,6 @@ Thumbs.db
 
 # generated from brand/ by scripts/sync-brand.mjs
 /public/brand
+
+# local AI tooling state (Ruflo hooks)
+/.claude-flow/

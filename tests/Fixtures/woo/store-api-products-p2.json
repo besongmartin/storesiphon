@@ -1,0 +1,74 @@
+[
+ {
+  "id": 106,
+  "name": "Rain Hood",
+  "slug": "rain-hood",
+  "parent": 0,
+  "type": "simple",
+  "variation": "",
+  "permalink": "https://shop.acme-store.com/product/rain-hood/",
+  "sku": "HOOD-1",
+  "short_description": "<p>Short.</p>",
+  "description": "<p>Plain description.</p>",
+  "on_sale": false,
+  "prices": {
+   "price": "3000",
+   "regular_price": "3000",
+   "sale_price": "3000",
+   "price_range": null,
+   "currency_code": "EUR",
+   "currency_symbol": "€",
+   "currency_minor_unit": 2,
+   "currency_decimal_separator": ",",
+   "currency_thousand_separator": ".",
+   "currency_prefix": "",
+   "currency_suffix": " €"
+  },
+  "price_html": "",
+  "average_rating": "4.50",
+  "review_count": 2,
+  "images": [
+   {
+    "id": 1060,
+    "src": "https://shop.acme-store.com/wp-content/uploads/rain-hood.jpg",
+    "thumbnail": "",
+    "srcset": "",
+    "sizes": "",
+    "name": "rain-hood",
+    "alt": "Rain Hood photo"
+   }
+  ],
+  "categories": [
+   {
+    "id": 11,
+    "name": "Hats",
+    "slug": "hats",
+    "link": "https://shop.acme-store.com/product-category/hats/"
+   }
+  ],
+  "tags": [],
+  "brands": [
+   {
+    "id": 31,
+    "name": "Acme",
+    "slug": "acme",
+    "link": ""
+   }
+  ],
+  "attributes": [],
+  "variations": [],
+  "grouped_products": [],
+  "has_options": false,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": true,
+  "low_stock_remaining": null,
+  "stock_availability": {
+   "text": "",
+   "class": "in-stock"
+  },
+  "sold_individually": false,
+  "add_to_cart": {},
+  "extensions": {}
+ }
+]
