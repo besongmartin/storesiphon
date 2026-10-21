@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-48 0 304 256" width="304" height="256" role="img" aria-label="Working"><title>Working</title><style>
+  .sld-r { opacity:0; animation:sld-flow 1.6s cubic-bezier(.22,1,.36,1) infinite; }
+  .sld-r2 { animation-delay:0.8s; }
+  @keyframes sld-flow {
+    0% { opacity:0; transform:translateX(54px); }
+    20% { opacity:1; }
+    60% { opacity:1; transform:translateX(0); }
+    100% { opacity:0; transform:translateX(-36px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sld-r { animation:none; opacity:1; transform:none; } .sld-r2 { display:none; }
+  }
+</style><path fill="#FFFFFF" d="M128 148A66 66 0 0 1 128 16L128 56A26 26 0 0 0 128 108ZM127.5 16H194V56H127.5ZM128 108A66 66 0 0 1 128 240L128 200A26 26 0 0 0 128 148ZM116 200H128.5V240H116Z"/><path class="sld-r" fill="#4FD8BF" d="M62 200H102V240H62Z"/><path class="sld-r sld-r2" fill="#4FD8BF" d="M62 200H102V240H62Z"/></svg>

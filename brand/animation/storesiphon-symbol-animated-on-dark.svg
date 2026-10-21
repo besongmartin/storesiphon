@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="StoreSiphon"><title>StoreSiphon</title><style>
+  .ssd-draw { stroke-dasharray:400; stroke-dashoffset:400; animation:ssd-draw .7s cubic-bezier(.65,0,.35,1) .05s forwards; }
+  .ssd-rec { opacity:0; transform:translateX(54px); animation:ssd-rec .42s cubic-bezier(.22,1,.36,1) .62s forwards; }
+  @keyframes ssd-draw { to { stroke-dashoffset:0; } }
+  @keyframes ssd-rec { 0% { opacity:0; transform:translateX(54px); } 25% { opacity:1; } 100% { opacity:1; transform:translateX(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ssd-draw { animation:none; stroke-dashoffset:0; }
+    .ssd-rec, .ssd-word { animation:none; opacity:1; transform:none; }
+  }
+</style><mask id="ssd-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256"><path class="ssd-draw" d="M196 36H128A46 46 0 0 0 128 128A46 46 0 0 1 128 220H114" fill="none" stroke="#fff" stroke-width="46" stroke-linejoin="round"/></mask><path class="ssd-rec" fill="#4FD8BF" d="M62 200H102V240H62Z"/><path fill="#FFFFFF" mask="url(#ssd-mask)" d="M128 148A66 66 0 0 1 128 16L128 56A26 26 0 0 0 128 108ZM127.5 16H194V56H127.5ZM128 108A66 66 0 0 1 128 240L128 200A26 26 0 0 0 128 148ZM116 200H128.5V240H116Z"/></svg>

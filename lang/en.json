@@ -1,0 +1,9 @@
+{
+    "profile-information-updated": "Your profile has been updated.",
+    "password-updated": "Your password has been updated.",
+    "two-factor-authentication-enabled": "Scan the QR code to finish setting up two-factor authentication.",
+    "two-factor-authentication-confirmed": "Two-factor authentication is on. Save your recovery codes now.",
+    "two-factor-authentication-disabled": "Two-factor authentication has been turned off.",
+    "recovery-codes-generated": "New recovery codes generated. The old ones no longer work.",
+    "verification-link-sent": "A new verification link has been sent to your email address."
+}

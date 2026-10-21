@@ -1,0 +1,4 @@
+# Local XAMPP safety: this project sits inside htdocs, so block direct access to everything
+# (.env, vendor/, storage/, source). The app is served from public/ via `php artisan serve`.
+# Only public/ and brand/ (static brand assets/demo) are reachable through Apache.
+Require all denied

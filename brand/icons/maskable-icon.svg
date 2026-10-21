@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="StoreSiphon">
+<title>StoreSiphon</title>
+<rect width="512" height="512" rx="0" fill="#0B1F2E"/>
+<path fill="#FFFFFF" d="M256 280.96A68.64 68.64 0 0 1 256 143.68L256 193.6A18.72 18.72 0 0 0 256 231.04ZM255.48 143.68H324.64V193.6H255.48ZM256 231.04A68.64 68.64 0 0 1 256 368.32L256 318.4A18.72 18.72 0 0 0 256 280.96Z"/>
+<path fill="#4FD8BF" d="M187.36 318.4H237.28V368.32H187.36Z"/>
+</svg>
