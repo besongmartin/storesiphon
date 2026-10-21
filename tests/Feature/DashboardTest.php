@@ -27,9 +27,9 @@ it('renders the dashboard component', function () {
 
 it('shows the admin section only to admins', function () {
     $user = User::factory()->create();
-    $this->actingAs($user)->get('/dashboard')->assertDontSee('Administration (Phase 4)');
+    $this->actingAs($user)->get('/dashboard')->assertDontSee('admin/payments');
 
     $admin = User::factory()->create();
     $admin->forceFill(['role' => User::ROLE_ADMIN])->save();
-    $this->actingAs($admin)->get('/dashboard')->assertSee('Administration (Phase 4)');
+    $this->actingAs($admin)->get('/dashboard')->assertSee('admin/payments');
 });

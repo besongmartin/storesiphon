@@ -16,14 +16,16 @@ class Dashboard extends Component
     {
         $user = auth()->user();
         $jobs = ExtractionJob::ownedBy($user);
-        $monthProducts = (clone $jobs)->where('created_at', '>=', now()->startOfMonth())->sum('products_found');
+        $plan = $user->currentPlan();
+        $subscription = $user->activeSubscription();
+        $used = $user->productsUsedThisPeriod();
         $recent = (clone $jobs)->with('store')->latest()->limit(5)->get();
 
         return view('livewire.dashboard', [
             'stats' => [
-                ['label' => 'Plan', 'value' => 'Free', 'hint' => config('storesiphon.limits.free.max_products_per_job').' products per extraction'],
-                ['label' => 'Products this month', 'value' => number_format($monthProducts), 'hint' => 'Across all extractions'],
-                ['label' => 'Extractions', 'value' => number_format((clone $jobs)->count()), 'hint' => 'Kept for '.config('storesiphon.limits.free.retention_days').' days'],
+                ['label' => 'Plan', 'value' => $plan->name, 'hint' => $subscription ? 'Paid until '.$subscription->ends_at->toFormattedDateString() : number_format($plan->max_products_per_job).' products per extraction'],
+                ['label' => 'Products this period', 'value' => number_format($used).' / '.number_format($plan->product_quota), 'hint' => 'Since '.$user->periodStart()->toFormattedDateString()],
+                ['label' => 'Extractions', 'value' => number_format((clone $jobs)->count()), 'hint' => 'Results kept for '.$plan->retention_days.' days'],
             ],
             'recent' => $recent,
             'polling' => $recent->contains(fn (ExtractionJob $j) => $j->isActive()),

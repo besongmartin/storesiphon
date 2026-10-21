@@ -2,7 +2,7 @@
     <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
             <h2 class="text-2xl font-semibold tracking-[var(--tracking-tight)]">Extractions</h2>
-            <p class="mt-1 text-sm text-muted">Results are kept for {{ config('storesiphon.limits.free.retention_days') }} days.</p>
+            <p class="mt-1 text-sm text-muted">Results are kept for {{ auth()->user()->currentPlan()->retention_days }} days.</p>
         </div>
         <x-button :href="route('extractions.create')">New extraction</x-button>
     </div>

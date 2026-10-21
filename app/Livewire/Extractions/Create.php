@@ -21,13 +21,13 @@ class Create extends Component
 
     public function mount(): void
     {
-        $this->maxProducts = (int) config('storesiphon.limits.free.max_products_per_job');
+        $this->maxProducts = auth()->user()->currentPlan()->max_products_per_job;
     }
 
     public function start(ExtractionService $service)
     {
         $this->validate();
-        $max = (int) config('storesiphon.limits.free.max_products_per_job');
+        $max = auth()->user()->currentPlan()->max_products_per_job;
         $this->validate(['maxProducts' => "required|integer|min:1|max:{$max}"]);
 
         $job = $service->start(auth()->user(), $this->url, [
@@ -41,7 +41,7 @@ class Create extends Component
     public function render()
     {
         return view('livewire.extractions.create', [
-            'limit' => (int) config('storesiphon.limits.free.max_products_per_job'),
+            'limit' => auth()->user()->currentPlan()->max_products_per_job,
         ]);
     }
 }

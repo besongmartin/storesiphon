@@ -4,7 +4,7 @@
         ['label' => 'Dashboard', 'route' => 'dashboard', 'ready' => true],
         ['label' => 'New extraction', 'route' => 'extractions.create', 'ready' => true],
         ['label' => 'Extractions', 'route' => 'extractions.index', 'ready' => true, 'match' => ['extractions.index', 'extractions.show']],
-        ['label' => 'Billing', 'route' => null, 'ready' => false],
+        ['label' => 'Billing', 'route' => 'billing.index', 'ready' => true, 'match' => ['billing.*']],
         ['label' => 'Settings', 'route' => 'settings.profile', 'ready' => true, 'match' => 'settings.*'],
     ];
     $user = auth()->user();
@@ -40,7 +40,7 @@
             @endforeach
             @if ($user?->isAdmin())
                 <p class="px-3 pt-6 pb-2 text-xs font-semibold uppercase tracking-[var(--tracking-caps)] text-muted">Admin</p>
-                <span class="flex h-9 items-center px-3 text-sm text-muted" aria-disabled="true">Administration (Phase 4)</span>
+                <a href="{{ route('admin.payments') }}" class="flex h-9 items-center rounded-md px-3 text-sm font-medium {{ request()->routeIs('admin.*') ? 'bg-primary-subtle text-primary' : 'text-secondary hover:bg-sunken hover:text-ink' }}">Payments</a>
             @endif
         </nav>
     </aside>

@@ -38,10 +38,19 @@ Requirements: PHP 8.2+ (`pdo_mysql`, `intl`, `sodium`), Composer 2, Node 22+, XA
    - Extractions and exports run in the background. Keep a worker running:
 
      ```bash
-     php artisan queue:work --queue=extractions,default --tries=1 --timeout=3600
+     php artisan queue:work --queue=payments,extractions,default --tries=1 --timeout=3600
      ```
 
    - Diagnostics (no data saved): `php artisan fetch:probe <url>` and `php artisan extract:run <store> --max=5`. Use them only on stores you are allowed to scrape.
+
+## Bitcoin payments (BTCPay Server)
+
+1. Create a store on a BTCPay Server host (use **testnet** while developing) and connect a watch-only wallet (xpub): StoreSiphon never holds keys.
+2. In BTCPay: create an API key with `btcpay.store.canmodifyinvoices` and `btcpay.store.canviewinvoices`, and a webhook pointing to `https://<your-domain>/webhooks/btcpay` (all invoice events). Copy its secret.
+3. Put `BTCPAY_URL`, `BTCPAY_API_KEY`, `BTCPAY_STORE_ID` and `BTCPAY_WEBHOOK_SECRET` into `.env` yourself. Never commit them.
+4. Run the scheduler (`php artisan schedule:work` locally) so `billing:reconcile` re-checks open invoices every 5 minutes. Locally, webhooks cannot reach your machine; the invoice page and the reconciler pick up payments instead.
+
+Access is granted only when BTCPay's API reports the invoice settled (1 confirmation). Under-, over- and late payments go to the admin review queue at `/admin/payments` (admin role + two-factor required).
 
 ## Tests
 

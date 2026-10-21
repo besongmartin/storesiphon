@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    // Bitcoin payments (BTCPay Server, Greenfield API). Secrets live only in .env.
+    'btcpay' => [
+        'url' => env('BTCPAY_URL'),
+        'api_key' => env('BTCPAY_API_KEY'),
+        'store_id' => env('BTCPAY_STORE_ID'),
+        'webhook_secret' => env('BTCPAY_WEBHOOK_SECRET'),
+        'confirmations' => (int) env('BTCPAY_CONFIRMATIONS', 1),      // D8: 1 confirmation
+        'expiration_minutes' => (int) env('BTCPAY_INVOICE_EXPIRATION', 30),
+    ],
 ];

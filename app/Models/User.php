@@ -5,8 +5,10 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -56,6 +58,48 @@ class User extends Authenticatable implements MustVerifyEmail
             'two_factor_confirmed_at' => 'datetime',
             'suspended_at' => 'datetime',
         ];
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    /** The subscription covering right now (latest-ending wins when periods overlap). */
+    public function activeSubscription(): ?Subscription
+    {
+        return $this->subscriptions()
+            ->with('plan')
+            ->where('starts_at', '<=', now())
+            ->where('ends_at', '>', now())
+            ->orderByDesc('ends_at')
+            ->first();
+    }
+
+    public function currentPlan(): Plan
+    {
+        return $this->activeSubscription()?->plan ?? Plan::free();
+    }
+
+    /** Start of the current usage period: the paid period's start, or the calendar month for Free. */
+    public function periodStart(): Carbon
+    {
+        return $this->activeSubscription()?->starts_at ?? now()->startOfMonth();
+    }
+
+    /** Products extracted (and reserved by running jobs) in the current period. */
+    public function productsUsedThisPeriod(): int
+    {
+        $jobs = ExtractionJob::ownedBy($this)->where('created_at', '>=', $this->periodStart());
+        $done = (clone $jobs)->whereNotIn('status', ExtractionJob::ACTIVE)->sum('products_found');
+        $reserved = (clone $jobs)->whereIn('status', ExtractionJob::ACTIVE)->get()->sum(fn (ExtractionJob $j) => $j->maxProducts());
+
+        return (int) $done + (int) $reserved;
     }
 
     public function isAdmin(): bool

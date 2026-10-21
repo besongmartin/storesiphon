@@ -23,23 +23,33 @@ final class ExtractionService
     /** @param array{max_products?: int, include_variations?: bool} $options */
     public function start(User $user, string $url, array $options = []): ExtractionJob
     {
-        $limits = config('storesiphon.limits.free');
+        $plan = $user->currentPlan();
         $url = $this->validateUrl($url);
 
         $running = ExtractionJob::ownedBy($user)->whereIn('status', ExtractionJob::ACTIVE)->count();
-        if ($running >= $limits['concurrent_jobs']) {
-            throw ValidationException::withMessages(['url' => 'You already have an extraction running. Wait for it to finish or cancel it first.']);
+        if ($running >= $plan->concurrent_jobs) {
+            throw ValidationException::withMessages(['url' => $plan->concurrent_jobs === 1
+                ? 'You already have an extraction running. Wait for it to finish or cancel it first.'
+                : "Your plan runs up to {$plan->concurrent_jobs} extractions at once. Wait for one to finish first."]);
         }
 
+        // Monthly (or per paid period) product quota; running jobs reserve their maximum.
+        $remaining = $plan->product_quota - $user->productsUsedThisPeriod();
+        if ($remaining <= 0) {
+            throw ValidationException::withMessages(['url' => "You have used all {$plan->product_quota} products in your {$plan->name} plan for this period."
+                .($plan->isFree() ? ' Upgrade to keep extracting.' : '')]);
+        }
+
+        $requested = (int) ($options['max_products'] ?? $plan->max_products_per_job);
         $job = ExtractionJob::create([
             'user_id' => $user->id,
             'input_url' => $url,
             'status' => ExtractionJob::QUEUED,
             'options' => [
-                'max_products' => max(1, min((int) ($options['max_products'] ?? $limits['max_products_per_job']), $limits['max_products_per_job'])),
+                'max_products' => max(1, min($requested, $plan->max_products_per_job, $remaining)),
                 'include_variations' => (bool) ($options['include_variations'] ?? true),
             ],
-            'expires_at' => now()->addDays($limits['retention_days']),
+            'expires_at' => now()->addDays($plan->retention_days),
         ]);
 
         RunExtraction::dispatch($job->id);
@@ -81,7 +91,8 @@ final class ExtractionService
 
     public function export(ExtractionJob $job, string $format, bool $htmlDescriptions = false): Export
     {
-        if (! in_array($format, config('storesiphon.exports.formats'), true)) {
+        $plan = $job->user?->currentPlan();
+        if (! in_array($format, config('storesiphon.exports.formats'), true) || ($plan && ! in_array($format, $plan->export_formats, true))) {
             throw ValidationException::withMessages(['format' => 'Unsupported export format.']);
         }
 
