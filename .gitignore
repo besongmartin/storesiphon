@@ -30,4 +30,7 @@ Thumbs.db
 /public/brand
 
 # local AI tooling state (Ruflo hooks)
-/.claude-flow/
+.claude/
+.claude-flow/
+CLAUDE.md
+.mcp.json
